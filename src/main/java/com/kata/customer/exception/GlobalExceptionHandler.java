@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestControllerAdvice
@@ -17,10 +18,13 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Object> handleNotFound(ResourceNotFoundException ex) {
         return buildResponse(HttpStatus.NOT_FOUND, "Resource not found", ex.getMessage());
     }
-
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<Object> handleDataConflict(DataIntegrityViolationException ex) {
-        return buildResponse(HttpStatus.CONFLICT, "Data integrity violation", ex.getRootCause().getMessage());
+        String rootCauseMessage = Optional.ofNullable(ex.getRootCause())
+                .map(Throwable::getMessage)
+                .orElse("No detailed message available");
+
+        return buildResponse(HttpStatus.CONFLICT, "Data integrity violation", rootCauseMessage);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

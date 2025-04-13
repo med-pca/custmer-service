@@ -5,7 +5,6 @@ import com.kata.customer.dto.OrderDTO;
 import com.kata.customer.exception.ResourceNotFoundException;
 import com.kata.customer.model.Customer;
 import com.kata.customer.mapper.CustomerMapper;
-import com.kata.customer.mapper.OrderMapper;
 import com.kata.customer.repository.CustomerRepository;
 import org.springframework.stereotype.Service;
 
